@@ -1,6 +1,9 @@
 import { useState, useCallback } from 'react'
 import { OverviewCards } from '@/components/OverviewCards'
 import { FavoriteFoodsSection } from '@/components/FavoriteFoodsSection'
+import { DislikedFoodsSection } from '@/components/DislikedFoodsSection'
+import { AllergiesSection } from '@/components/AllergiesSection'
+import { SpecialInstructionsSection } from '@/components/SpecialInstructionsSection'
 import type {
   MealPreferencesType,
   FavoriteFood,
@@ -9,7 +12,6 @@ import type {
   MealType,
   SeverityLevel,
 } from '@/types/meal-preferences'
-import { DislikedFoodsSection } from './DislikedFoodsSection'
 
 const initialPreferences: MealPreferencesType = {
   favoritesFoods: [
@@ -37,6 +39,7 @@ const initialPreferences: MealPreferencesType = {
 
 export default function MealPreferences() {
   const [preferences, setPreferences] = useState<MealPreferencesType>(initialPreferences)
+
   const logChange = useCallback((action: string, data: any) => {
     console.log(`[Meal Preferences] ${action}:`, data)
   }, [])
@@ -104,6 +107,45 @@ export default function MealPreferences() {
     logChange('Remove Disliked Food', { id })
   }, [logChange])
 
+  const handleAddAllergy = useCallback((name: string, severity: SeverityLevel, reaction?: string) => {
+    const newAllergy: Allergy = {
+      id: Date.now().toString(),
+      name,
+      severity,
+      reaction,
+    }
+    setPreferences(prev => ({
+      ...prev,
+      allergies: [...prev.allergies, newAllergy],
+    }))
+    logChange('Add Allergy', newAllergy)
+  }, [logChange])
+
+  const handleEditAllergy = useCallback((id: string, name: string, severity: SeverityLevel, reaction?: string) => {
+    setPreferences(prev => ({
+      ...prev,
+      allergies: prev.allergies.map(allergy =>
+        allergy.id === id ? { ...allergy, name, severity, reaction } : allergy
+      ),
+    }))
+    logChange('Edit Allergy', { id, name, severity, reaction })
+  }, [logChange])
+
+  const handleRemoveAllergy = useCallback((id: string) => {
+    setPreferences(prev => ({
+      ...prev,
+      allergies: prev.allergies.filter(allergy => allergy.id !== id),
+    }))
+    logChange('Remove Allergy', { id })
+  }, [logChange])
+
+  const handleInstructionsChange = useCallback((instructions: string) => {
+    setPreferences(prev => ({
+      ...prev,
+      specialInstructions: instructions,
+    }))
+    logChange('Update Special Instructions', { instructions })
+  }, [logChange])
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fff9f0" }}>
@@ -129,6 +171,19 @@ export default function MealPreferences() {
               onAddFood={handleAddDislikedFood}
               onEditFood={handleEditDislikedFood}
               onRemoveFood={handleRemoveDislikedFood}
+            />
+          </div>
+
+          <div className="space-y-6">
+            <AllergiesSection
+              allergies={preferences.allergies}
+              onAddAllergy={handleAddAllergy}
+              onEditAllergy={handleEditAllergy}
+              onRemoveAllergy={handleRemoveAllergy}
+            />
+            <SpecialInstructionsSection
+              instructions={preferences.specialInstructions}
+              onInstructionsChange={handleInstructionsChange}
             />
           </div>
         </div>

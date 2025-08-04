@@ -1,9 +1,12 @@
 import { useState, useCallback } from 'react'
+import { Button } from '@/components/ui/button'
 import { OverviewCards } from '@/components/OverviewCards'
 import { FavoriteFoodsSection } from '@/components/FavoriteFoodsSection'
 import { DislikedFoodsSection } from '@/components/DislikedFoodsSection'
 import { AllergiesSection } from '@/components/AllergiesSection'
 import { SpecialInstructionsSection } from '@/components/SpecialInstructionsSection'
+import { SaveNotification } from '@/components/SaveNotification'
+
 import type {
   MealPreferencesType,
   FavoriteFood,
@@ -11,8 +14,8 @@ import type {
   Allergy,
   MealType,
   SeverityLevel,
+  SaveNotification as SaveNotificationType
 } from '@/types/meal-preferences'
-import { Button } from './ui/button'
 
 const initialPreferences: MealPreferencesType = {
   favoritesFoods: [
@@ -40,10 +43,24 @@ const initialPreferences: MealPreferencesType = {
 
 export default function MealPreferences() {
   const [preferences, setPreferences] = useState<MealPreferencesType>(initialPreferences)
+  const [notification, setNotification] = useState<SaveNotificationType>({
+    show: false,
+    message: '',
+    type: 'success'
+  })
+
+  const showNotification = useCallback((message: string, type: 'success' | 'error' = 'success') => {
+    setNotification({ show: true, message, type })
+  }, [])
+
+  const hideNotification = useCallback(() => {
+    setNotification(prev => ({ ...prev, show: false }))
+  }, [])
 
   const logChange = useCallback((action: string, data: any) => {
     console.log(`[Meal Preferences] ${action}:`, data)
-  }, [])
+    showNotification('Changes saved!')
+  }, [showNotification])
 
   const handleAddFavoriteFood = useCallback((name: string, mealType: MealType) => {
     const newFood: FavoriteFood = {
@@ -150,8 +167,8 @@ export default function MealPreferences() {
 
   const handleSaveDraft = () => {
     console.log('[Meal Preferences] Save Draft - Complete Data:', preferences)
+    showNotification('Draft saved successfully!')
   }
-
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fff9f0" }}>
@@ -205,6 +222,11 @@ export default function MealPreferences() {
           </Button>
         </div>
       </main>
+
+      <SaveNotification
+        notification={notification}
+        onClose={hideNotification}
+      />
     </div>
   )
 }

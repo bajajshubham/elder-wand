@@ -12,7 +12,7 @@ export function SaveNotification({ notification, onClose }: SaveNotificationProp
     if (notification.show) {
       const timer = setTimeout(() => {
         onClose()
-      }, 3000)
+      }, 2000)
       return () => clearTimeout(timer)
     }
   }, [notification.show, onClose])

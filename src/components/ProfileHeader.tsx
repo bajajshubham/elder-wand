@@ -1,5 +1,6 @@
 import { Calendar, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export function ProfileHeader() {
   return (
@@ -26,6 +27,7 @@ export function ProfileHeader() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
+            <ThemeToggle />
 
             <Button variant="outline" disabled size="sm" className="border-sage-300 shadow-xs text-white header-button" style={{ backgroundColor: "rgba(6, 34, 47, 1)" }}>
               <Calendar className="w-4 h-4 text-white" />

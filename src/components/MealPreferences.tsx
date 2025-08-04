@@ -12,6 +12,7 @@ import type {
   MealType,
   SeverityLevel,
 } from '@/types/meal-preferences'
+import { Button } from './ui/button'
 
 const initialPreferences: MealPreferencesType = {
   favoritesFoods: [
@@ -147,6 +148,11 @@ export default function MealPreferences() {
     logChange('Update Special Instructions', { instructions })
   }, [logChange])
 
+  const handleSaveDraft = () => {
+    console.log('[Meal Preferences] Save Draft - Complete Data:', preferences)
+  }
+
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fff9f0" }}>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -186,6 +192,17 @@ export default function MealPreferences() {
               onInstructionsChange={handleInstructionsChange}
             />
           </div>
+        </div>
+
+        <div className="mt-8 flex justify-end">
+          <Button
+            onClick={handleSaveDraft}
+            className="border-sage-300 shadow-xs px-6"
+            variant="outline"
+            style={{ backgroundColor: "rgba(6, 34, 47, 1)" }}
+          >
+            <span style={{ color: "rgb(255, 255, 255)" }}>Save Draft</span>
+          </Button>
         </div>
       </main>
     </div>

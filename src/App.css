@@ -171,3 +171,48 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-width: 425px) {
+  .mobile-add-section {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mobile-add-row {
+    display: flex !important;
+    width: 100%;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .mobile-select-row .mobile-add-row > .relative {
+    flex: 1 !important;
+  }
+
+  .mobile-select-row .mobile-add-row select {
+    width: 100% !important;
+  }
+
+  .mobile-edit-section {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .mobile-edit-row {
+    display: flex !important;
+    width: 100%;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .mobile-edit-select-row .mobile-edit-row > .relative {
+    flex: 1 !important;
+  }
+
+  .mobile-edit-select-row .mobile-edit-row select {
+    width: 100% !important;
+  }
+}
